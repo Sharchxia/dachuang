@@ -12,30 +12,13 @@ import ports.port_init
 import ports.rx
 import ports.tx
 import ports.convert
-# import ports.my_decorator
 
 THREAD_POOL = {}  # 灵活线程池
 
 ser = None  # 端口的声明
 TTT_start = None  # 计时器
 TTT_end = None  # 计时器
-# # 各个线程的初始声明
-# angle_euler_th = None
-# angle_speed_th = None
-# angle_acc_th = None
-#
-# source_storage_th = None
-#
-# temper_status_th = None
-#
-# light_status_th = None
-#
-# write_th = None
-# # 修饰器
-# wrong = ports.my_decorator.check_wrong  # 保证ser端口初始化，否则不执行其后代码，防止错误
-# TTT = ports.my_decorator.time_limitation  # 开始时间戳
-# start = ports.my_decorator.send_start_bits  # 发送帧头
-# stop = ports.my_decorator.send_stop_bits  # 发送帧尾
+
 # 用于外部调用函数的函数名
 convert_to_float = ports.convert.convert_to_float  # 二进制形式的32位字符串转换位32为float型
 convert_to_int = ports.convert.convert_to_int  # 二进制形式的32位字符串转换为32位int型

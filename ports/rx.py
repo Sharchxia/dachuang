@@ -3,17 +3,6 @@ from ports.my_decorator import time_limitation as TTT
 import ports
 from ports import *
 
-# def flexible(thread_name:str,start_bits:str, useful_code_length:int, useful_code_begin:int, num_of_useful) -> Any:
-#     if ports.THREAD_POOL[thread_name]:
-#         pass
-#     else:
-#         th = threading.Thread(target=read_flexible,args=(start_bits, useful_code_length, useful_code_begin, num_of_useful))
-#         ports.THREAD_POOL[thread_name] = th
-#         th.start()
-#         th.join(5000)
-#         return th.result
-
-
 @wrong
 @TTT  # 未完成代码，不要使用
 def read_flexible(start_bits: str, useful_code_length: int, useful_code_begin: int, num_of_useful) -> Any:
@@ -27,18 +16,6 @@ def read_flexible(start_bits: str, useful_code_length: int, useful_code_begin: i
             pool.append(str(ports.ser.read(useful_code_length).hex()))
         flag = False
     return pool
-
-
-# def read_angle_euler() -> Dict[str,float]:
-#     if ports.angle_euler_th is None:
-#         ports.angle_euler_th = threading.Thread(target=angle_euler)  # 设置线程
-#     try:
-#         if not ports.angle_euler_th.is_alive():
-#             ports.angle_euler_th.start()
-#             ports.angle_euler_th.join(5000)
-#             return ports.angle_euler_th.result
-#     except:
-#         print('thread initialized wrongly')
 
 
 @wrong
@@ -65,18 +42,6 @@ def angle_euler() -> Dict[str, float]:
     return {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
 
 
-# def read_angle_speed() -> Dict[str,float]:
-#     if ports.angle_speed_th is None:
-#         ports.angle_speed_th = threading.Thread(target=angle_speed)  # 设置线程
-#     try:
-#         if not ports.angle_speed_th.is_alive():
-#             ports.angle_speed_th.start()
-#             ports.angle_speed_th.join(5000)
-#             return ports.angle_speed_th.result
-#     except:
-#         print('thread initialized wrongly')
-
-
 @wrong
 @TTT
 def angle_speed() -> Dict[str, float]:
@@ -101,18 +66,6 @@ def angle_speed() -> Dict[str, float]:
     return {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
 
 
-# def read_angle_acc() -> Dict[str,float]:
-#     if ports.angle_acc_th is None:
-#         ports.angle_acc_th = threading.Thread(target=angle_acc)
-#     try:
-#         if not ports.angle_acc_th.is_alive():
-#             ports.angle_acc_th.start()
-#             ports.angle_acc_th.join(5000)
-#             return ports.angle_acc_th.result
-#     except:
-#         print('thread initialized wrongly')
-
-
 @wrong
 @TTT
 def angle_acc() -> Dict[str, float]:
@@ -135,18 +88,6 @@ def angle_acc() -> Dict[str, float]:
             usefulCode3 = convert_to_float(origin=ports.ser.read(4).hex())
             flag = False
     return {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
-
-
-# def read_light() -> Dict[str, int]:
-#     if ports.light_status_th is None:
-#         ports.light_status_th = threading.Thread(target=light_status)
-#     try:
-#         if not ports.light_status_th.is_alive():
-#             ports.light_status_th.start()
-#             ports.light_status_th.join(5000)
-#             return ports.light_status_th.result
-#     except:
-#         print('thread initialized wrongly')
 
 
 @wrong
@@ -177,18 +118,6 @@ def light_status() -> Dict[str, int]:
     return {'up': usefulCode0, 'right': usefulCode1, 'down': usefulCode2, 'left': usefulCode3, 'center': usefulCode4}
 
 
-# def read_source_storage() -> int:
-#     if ports.source_storage_th is None:
-#         ports.source_storage_th = threading.Thread(target=source_storage)
-#     try:
-#         if not ports.source_storage_th.is_alive():
-#             ports.source_storage_th.start()
-#             ports.source_storage_th.join(5000)
-#             return ports.source_storage_th.result
-#     except:
-#         print('thread initialized wrongly')
-
-
 @wrong
 @TTT
 def source_storage() -> int:
@@ -207,18 +136,6 @@ def source_storage() -> int:
             usefulCode = convert_to_int(origin=ports.ser.read().hex())
             flag = False
     return usefulCode
-
-
-# def read_temper_status() -> Dict[str, float]:
-#     if ports.temper_status_th is None:
-#         ports.temper_status_th = threading.Thread(target=temper_status)
-#     try:
-#         if not ports.temper_status_th.is_alive():
-#             ports.temper_status_th.start()
-#             ports.temper_status_th.join(5000)
-#             return ports.temper_status_th.result
-#     except:
-#         print('thread initialized wrongly')
 
 
 @wrong
