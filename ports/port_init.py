@@ -17,11 +17,14 @@ def port_list() -> List[str]:  # 返回可用端口的列表
 
 
 def port_set(port_name:str) -> None:
-    if port_name:
-        ports.ser = serial.Serial(port_name,115200,timeout=3)
-    else:
-        print('No such port')
-        pass
+    try:
+        if port_name:
+            ports.ser = serial.Serial(port_name,115200,timeout=3,stopbits=2)
+        else:
+            print('Please assign correct port')
+    except:
+        print('There is no such port.')
+
 
 
 def baud_set(rate:int) -> None:
@@ -34,7 +37,7 @@ def baud_set(rate:int) -> None:
 
 def port_test() -> bool:
     try:
-        if ports.ser.isopen():
+        if ports.ser.is_open():
             return True
     except:
         pass
