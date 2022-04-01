@@ -5,10 +5,11 @@ from ports import *
 from ports.convert import convert_to_float  # 二进制形式的32位字符串转换位32为float型
 from ports.convert import convert_to_int  # 二进制形式的32位字符串转换为32位int型
 from ports.convert import convert_to_unsigned8  # 二进制形式的8位字符串转换为8位unsigned int型
-from ports.convert import convert_uint8_to_bytes
-from ports.convert import convert_float32_to_bytes
-from ports.convert import convert_string_to_bytes
-from ports.convert import convert_bytes_to_string
+# from ports.convert import convert_uint8_to_bytes
+# from ports.convert import convert_float32_to_bytes
+# from ports.convert import convert_string_to_bytes
+# from ports.convert import convert_bytes_to_string
+# from ports.convert import convert_ushort_to_bytes
 
 @wrong
 @TTT  # 未完成代码，不要使用
@@ -195,11 +196,11 @@ def communicate() -> Dict[str, str]:  # 未完成代码，不要使用
         if ports.ser.read().hex() == b'\x55'.hex():
             operationCode = ports.ser.read().hex()
         if operationCode == b'\x01'.hex():
-            num = int(ports.ser.read().hex())
-            title = chr(int(ports.ser.read().hex()))
-            title += chr(int(ports.ser.read().hex()))
+            num = convert_to_unsigned8(ports.ser.read().hex())
+            title = ports.ser.read().decode('utf-8')
+            title += ports.ser.read().decode('utf-8')
             for i in range(num - 2):
-                message += chr(int(ports.ser.read().hex()))
+                message += ports.ser.read().decode('utf-8')
             flag = False
     data = {'bianhao': title, 'meg': message}
     return data

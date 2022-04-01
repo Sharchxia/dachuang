@@ -3,16 +3,19 @@ from ports import *
 from ports.my_decorator import check_wrong as wrong
 from ports.my_decorator import send_start_bits as start
 from ports.my_decorator import send_stop_bits as stop
-from ports.convert import convert_to_float  # 二进制形式的32位字符串转换位32为float型
-from ports.convert import convert_to_int  # 二进制形式的32位字符串转换为32位int型
-from ports.convert import convert_to_unsigned8  # 二进制形式的8位字符串转换为8位unsigned int型
+from ports.my_decorator import if_send_successfully as check
+# from ports.convert import convert_to_float  # 二进制形式的32位字符串转换位32为float型
+# from ports.convert import convert_to_int  # 二进制形式的32位字符串转换为32位int型
+# from ports.convert import convert_to_unsigned8  # 二进制形式的8位字符串转换为8位unsigned int型
 from ports.convert import convert_uint8_to_bytes
 from ports.convert import convert_float32_to_bytes
-from ports.convert import convert_string_to_bytes
-from ports.convert import convert_bytes_to_string
+from ports.convert import convert_ushort_to_bytes
+# from ports.convert import convert_string_to_bytes
+# from ports.convert import convert_bytes_to_string
 
 
 @wrong
+@check
 @start
 @stop
 def close_all():
@@ -22,6 +25,7 @@ def close_all():
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def source_control(n0=1,n1=1,n2=1,n3=1,n4=1,n5=1,n6=1,n7=1,n8=1,n9=1):
@@ -41,6 +45,7 @@ def source_control(n0=1,n1=1,n2=1,n3=1,n4=1,n5=1,n6=1,n7=1,n8=1,n9=1):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def wheel_control(switch=1):
@@ -50,6 +55,7 @@ def wheel_control(switch=1):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def temp_control(switch=1):
@@ -59,6 +65,7 @@ def temp_control(switch=1):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def magnetic_control(switch=1):
@@ -68,6 +75,7 @@ def magnetic_control(switch=1):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def wheel_speed_control(direction=True,speed=0):  # speed>=0 and direction=True,正转；speed<0 and direction=True,反转；
@@ -80,6 +88,7 @@ def wheel_speed_control(direction=True,speed=0):  # speed>=0 and direction=True,
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def temp_set(main_panel:float,gesture:float,source:float,hot:float):
@@ -92,6 +101,7 @@ def temp_set(main_panel:float,gesture:float,source:float,hot:float):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def magnetic_magnitude(x_axis:int,y_axis:int,x_moment:bool,y_moment:bool):  # True 代表磁矩为正
@@ -106,6 +116,7 @@ def magnetic_magnitude(x_axis:int,y_axis:int,x_moment:bool,y_moment:bool):  # Tr
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def temp_corresponding(main_panel:int, gesture:int, source:int, hot:int):
@@ -122,6 +133,7 @@ def temp_corresponding(main_panel:int, gesture:int, source:int, hot:int):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def heat_corresponding(main_panel:int, gesture:int, source:int, hot:int):
@@ -138,6 +150,7 @@ def heat_corresponding(main_panel:int, gesture:int, source:int, hot:int):
         ports.ser.write(i)
 
 @wrong
+@check
 @start
 @stop
 def steering_angle(main_panel:int, gesture:int, source:int, hot:int):
@@ -155,7 +168,17 @@ def steering_angle(main_panel:int, gesture:int, source:int, hot:int):
 
 
 @wrong
+@check
 @start
 @stop  # 未完成代码，不要使用
-def communicate(content:str):
-    pass
+def communicate(number:int,content:str) -> bool:
+    number = 0 if number<0 else number %256
+    num = convert_ushort_to_bytes(number)
+    N = len(content) + 2
+    content = content.encode('utf-8')
+    N = convert_uint8_to_bytes(N)
+    data = [b'\x16',N,num, content]
+    for i in data:
+        ports.ser.write(i)
+    return True
+
