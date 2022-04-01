@@ -25,6 +25,7 @@ def convert_to_unsigned8(origin:str, small=True) -> int:
 def convert_to_int(origin:str, small=True) -> int:
     num = 0
     try:
+        origin = origin+6*'0'
         if small:
             num = struct.unpack('<i',bytes.fromhex(origin))[0]  # 小段转换
         else:

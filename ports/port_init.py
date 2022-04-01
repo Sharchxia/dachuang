@@ -16,14 +16,17 @@ def port_list() -> List[str]:  # 返回可用端口的列表
         return list(portL)
 
 
-def port_set(port_name:str) -> None:
+def port_set(port_name:str) -> bool:
     try:
         if port_name:
             ports.ser = serial.Serial(port_name,115200,timeout=3,stopbits=2)
+            return True
         else:
+            return False
             print('Please assign correct port')
     except:
         print('There is no such port.')
+        return False
 
 
 

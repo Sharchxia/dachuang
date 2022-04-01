@@ -3,6 +3,13 @@ from ports import *
 from ports.my_decorator import check_wrong as wrong
 from ports.my_decorator import send_start_bits as start
 from ports.my_decorator import send_stop_bits as stop
+from ports.convert import convert_to_float  # 二进制形式的32位字符串转换位32为float型
+from ports.convert import convert_to_int  # 二进制形式的32位字符串转换为32位int型
+from ports.convert import convert_to_unsigned8  # 二进制形式的8位字符串转换为8位unsigned int型
+from ports.convert import convert_uint8_to_bytes
+from ports.convert import convert_float32_to_bytes
+from ports.convert import convert_string_to_bytes
+from ports.convert import convert_bytes_to_string
 
 
 @wrong
@@ -68,7 +75,7 @@ def wheel_speed_control(direction=True,speed=0):  # speed>=0 and direction=True,
     speed = abs(speed)%100
     speed = convert_uint8_to_bytes(speed)
     c = b'\x00' if direction is False else b'\x01'
-    data = [b'\x0a',b'\x01',speed,c]
+    data = [b'\x0a',b'\x02',speed,c]
     for i in data:
         ports.ser.write(i)
 

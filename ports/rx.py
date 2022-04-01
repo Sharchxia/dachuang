@@ -2,6 +2,13 @@ from ports.my_decorator import check_wrong as wrong
 from ports.my_decorator import time_limitation as TTT
 import ports
 from ports import *
+from ports.convert import convert_to_float  # 二进制形式的32位字符串转换位32为float型
+from ports.convert import convert_to_int  # 二进制形式的32位字符串转换为32位int型
+from ports.convert import convert_to_unsigned8  # 二进制形式的8位字符串转换为8位unsigned int型
+from ports.convert import convert_uint8_to_bytes
+from ports.convert import convert_float32_to_bytes
+from ports.convert import convert_string_to_bytes
+from ports.convert import convert_bytes_to_string
 
 @wrong
 @TTT  # 未完成代码，不要使用
@@ -39,7 +46,8 @@ def angle_euler() -> Dict[str, float]:
             usefulCode2 = convert_to_float(origin=ports.ser.read(4).hex())
             usefulCode3 = convert_to_float(origin=ports.ser.read(4).hex())
             flag = False
-    return {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
+    data = {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
+    return data
 
 
 @wrong
@@ -63,7 +71,8 @@ def angle_speed() -> Dict[str, float]:
             usefulCode2 = convert_to_float(origin=ports.ser.read(4).hex())
             usefulCode3 = convert_to_float(origin=ports.ser.read(4).hex())
             flag = False
-    return {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
+    data = {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
+    return data
 
 
 @wrong
@@ -87,7 +96,8 @@ def angle_acc() -> Dict[str, float]:
             usefulCode2 = convert_to_float(origin=ports.ser.read(4).hex())
             usefulCode3 = convert_to_float(origin=ports.ser.read(4).hex())
             flag = False
-    return {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
+    data = {'pianhang': usefulCode1, 'fuyang': usefulCode2, 'gunzhuan': usefulCode3}
+    return data
 
 
 @wrong
@@ -115,7 +125,8 @@ def light_status() -> Dict[str, int]:
             usefulCode3 = convert_to_unsigned8(origin=ports.ser.read().hex())
             usefulCode4 = convert_to_unsigned8(origin=ports.ser.read().hex())
             flag = False
-    return {'up': usefulCode0, 'right': usefulCode1, 'down': usefulCode2, 'left': usefulCode3, 'center': usefulCode4}
+    data = {'up': usefulCode0, 'right': usefulCode1, 'down': usefulCode2, 'left': usefulCode3, 'center': usefulCode4}
+    return data
 
 
 @wrong
@@ -135,7 +146,8 @@ def source_storage() -> int:
             ports.ser.read()
             usefulCode = convert_to_int(origin=ports.ser.read().hex())
             flag = False
-    return usefulCode
+    data = usefulCode
+    return data
 
 
 @wrong
@@ -163,8 +175,9 @@ def temper_status() -> Dict[str, float]:
             usefulCode4 = convert_to_float(origin=ports.ser.read(4).hex())
             usefulCode5 = 1 if ports.ser.read().hex == b'\x01' else 0
             flag = False
-    return {'zhukong': usefulCode1, 'zitai': usefulCode2, 'dianyuan': usefulCode3, 'rekong': usefulCode4,
+    data = {'zhukong': usefulCode1, 'zitai': usefulCode2, 'dianyuan': usefulCode3, 'rekong': usefulCode4,
             're_on_off': usefulCode5}
+    return data
 
 
 @wrong
@@ -188,4 +201,5 @@ def communicate() -> Dict[str, str]:  # 未完成代码，不要使用
             for i in range(num - 2):
                 message += chr(int(ports.ser.read().hex()))
             flag = False
-    return {'bianhao': title, 'meg': message}
+    data = {'bianhao': title, 'meg': message}
+    return data
