@@ -1,11 +1,12 @@
-import ports
-from ports import *
-
+import ports.var as var
+import serial
+from serial.tools import list_ports
+from typing import List
 
 def port_list() -> List[str]:  # 返回可用端口的列表
     try:
-        ports.ser.close()
-        ports.ser = None
+        var.PORT.close()
+        var.PORT = serial.Serial()
     except:
         pass
     portL = list_ports.comports()
@@ -19,29 +20,29 @@ def port_list() -> List[str]:  # 返回可用端口的列表
 def port_set(port_name:str) -> bool:
     try:
         if port_name:
-            ports.ser = serial.Serial(port_name,115200,timeout=3,stopbits=2)
+            var.PORT = serial.Serial(port_name,115200,timeout=3,stopbits=2)
             return True
         else:
             return False
             print('Please assign correct port')
     except:
-        print('There is no such port.')
+        print('\033[1;31mThere is no such port.\033[0m')
         return False
 
 
 
 def baud_set(rate:int) -> None:
     try:
-        port.ser.baudrate = rate
+        var.PORT.baudrate = rate
     except:
         print('Please connect the port first')
         pass
 
 
-def port_test() -> bool:
-    try:
-        if ports.ser.is_open():
-            return True
-    except:
-        pass
-    return False
+# def port_test() -> bool:
+#     try:
+#         if PORT.is_open():
+#             return True
+#     except:
+#         pass
+#     return False

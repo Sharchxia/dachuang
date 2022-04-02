@@ -1,4 +1,4 @@
-from ports import *
+import struct
 
 def convert_to_float(origin:str, small=True) -> float:
     num = 0

@@ -1,5 +1,3 @@
-import ports
-from ports import *
 from ports.my_decorator import check_wrong as wrong
 from ports.my_decorator import send_start_bits as start
 from ports.my_decorator import send_stop_bits as stop
@@ -12,7 +10,7 @@ from ports.convert import convert_float32_to_bytes
 from ports.convert import convert_ushort_to_bytes
 # from ports.convert import convert_string_to_bytes
 # from ports.convert import convert_bytes_to_string
-
+import ports.var as var
 
 @wrong
 @check
@@ -22,7 +20,7 @@ def close_all():
     # data = [b'\xaa',b'\x55',b'\x00',b'\x01',b'\x00',b'\x00',b'\x0a',b'\x55']
     data = [b'\x00',b'\x01',b'\x00']
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -42,7 +40,7 @@ def source_control(n0=1,n1=1,n2=1,n3=1,n4=1,n5=1,n6=1,n7=1,n8=1,n9=1):
     # data = [b'\xaa',b'\x55',b'\x02',b'\x0a',c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,b'\x00',b'\x0a',b'\x0d']
     data = [b'\x02',b'\x0a',c0,c1,c2,c3,c4,c5,c6,c7,c8,c9]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -52,7 +50,7 @@ def wheel_control(switch=1):
     c = b'\x00' if switch==0 else b'\x01'
     data = [b'\x04',b'\x01',c]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -62,7 +60,7 @@ def temp_control(switch=1):
     c = b'\x00' if switch==0 else b'\x01'
     data = [b'\x06',b'\x01',c]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -72,7 +70,7 @@ def magnetic_control(switch=1):
     c = b'\x00' if switch==0 else b'\x01'
     data = [b'\x08',b'\x01',c]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -85,7 +83,7 @@ def wheel_speed_control(direction=True,speed=0):  # speed>=0 and direction=True,
     c = b'\x00' if direction is False else b'\x01'
     data = [b'\x0a',b'\x02',speed,c]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -98,7 +96,7 @@ def temp_set(main_panel:float,gesture:float,source:float,hot:float):
     hot = convert_float32_to_bytes(hot)
     data = [b'\x0c',b'\x10',main_panel,gesture,source,hot]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -113,7 +111,7 @@ def magnetic_magnitude(x_axis:int,y_axis:int,x_moment:bool,y_moment:bool):  # Tr
     y_moment = b'\x01' if y_moment else b'\x00'
     data = [b'\x0e',b'\x04',x_axis,y_axis,x_moment,y_moment]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -130,7 +128,7 @@ def temp_corresponding(main_panel:int, gesture:int, source:int, hot:int):
     hot = convert_uint8_to_bytes(hot)
     data = [b'\x10',b'\x04',main_panel,gesture,source,hot]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -147,7 +145,7 @@ def heat_corresponding(main_panel:int, gesture:int, source:int, hot:int):
     hot = convert_uint8_to_bytes(hot)
     data = [b'\x12',b'\x04',main_panel,gesture,source,hot]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 @wrong
 @check
@@ -164,7 +162,7 @@ def steering_angle(main_panel:int, gesture:int, source:int, hot:int):
     hot = convert_uint8_to_bytes(hot)
     data = [b'\x14',b'\x04',main_panel,gesture,source,hot]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
 
 
 @wrong
@@ -179,6 +177,6 @@ def communicate(number:int,content:str) -> bool:
     N = convert_uint8_to_bytes(N)
     data = [b'\x16',N,num, content]
     for i in data:
-        ports.ser.write(i)
+        var.PORT.write(i)
     return True
 
