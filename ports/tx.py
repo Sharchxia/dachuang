@@ -1,7 +1,7 @@
 from ports.my_decorator import check_wrong as wrong
 from ports.my_decorator import send_start_bits as start
 from ports.my_decorator import send_stop_bits as stop
-from ports.my_decorator import if_send_successfully as check
+# from ports.my_decorator import if_send_successfully as check
 # from ports.convert import convert_to_float  # 二进制形式的32位字符串转换位32为float型
 # from ports.convert import convert_to_int  # 二进制形式的32位字符串转换为32位int型
 # from ports.convert import convert_to_unsigned8  # 二进制形式的8位字符串转换为8位unsigned int型
@@ -12,20 +12,20 @@ from ports.convert import convert_ushort_to_bytes
 # from ports.convert import convert_bytes_to_string
 import ports.var as var
 
+# 经测试发现，对卫星的写操作： 要求每次写之间间隔一定的时间，否则会造成指令发送失败，即指令不执行
+# 在卫星开机时，应调用一次 open_all()函数，此后才可保证读与写功能正常
+
 @wrong
-@check
 @start
 @stop
-def close_all():
-    # data = [b'\xaa',b'\x55',b'\x00',b'\x01',b'\x00',b'\x00',b'\x0a',b'\x55']
+def close_all():  # 未测试且建议不要用
     data = [b'\x00',b'\x01',b'\x00']
     for i in data:
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 已测试
 def source_control(n0=1,n1=1,n2=1,n3=1,n4=1,n5=1,n6=1,n7=1,n8=1,n9=1):
     c0 = b'\x00' if n0==0 else b'\x01'
     c1 = b'\x00' if n1==0 else b'\x01'
@@ -43,9 +43,8 @@ def source_control(n0=1,n1=1,n2=1,n3=1,n4=1,n5=1,n6=1,n7=1,n8=1,n9=1):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 已测试
 def wheel_control(switch=1):
     c = b'\x00' if switch==0 else b'\x01'
     data = [b'\x04',b'\x01',c]
@@ -53,9 +52,8 @@ def wheel_control(switch=1):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 已测试
 def temp_control(switch=1):
     c = b'\x00' if switch==0 else b'\x01'
     data = [b'\x06',b'\x01',c]
@@ -63,9 +61,8 @@ def temp_control(switch=1):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 已测试
 def magnetic_control(switch=1):
     c = b'\x00' if switch==0 else b'\x01'
     data = [b'\x08',b'\x01',c]
@@ -73,12 +70,11 @@ def magnetic_control(switch=1):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
-def wheel_speed_control(direction=True,speed=0):  # speed>=0 and direction=True,正转；speed<0 and direction=True,反转；
+@stop  # 已测试
+def wheel_speed_control(speed=0,direction=True):  # speed>=0 and direction=True,正转；speed<0 and direction=True,反转；
     direction = direction if speed>=0 else not direction
-    speed = abs(speed)%100
+    speed = abs(speed)%101
     speed = convert_uint8_to_bytes(speed)
     c = b'\x00' if direction is False else b'\x01'
     data = [b'\x0a',b'\x02',speed,c]
@@ -86,9 +82,8 @@ def wheel_speed_control(direction=True,speed=0):  # speed>=0 and direction=True,
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 已测试
 def temp_set(main_panel:float,gesture:float,source:float,hot:float):
     main_panel = convert_float32_to_bytes(main_panel)
     gesture = convert_float32_to_bytes(gesture)
@@ -99,12 +94,11 @@ def temp_set(main_panel:float,gesture:float,source:float,hot:float):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
-def magnetic_magnitude(x_axis:int,y_axis:int,x_moment:bool,y_moment:bool):  # True 代表磁矩为正
-    x_axis = 0 if x_axis<0 else x_axis%101
-    y_axis = 0 if y_axis<0 else y_axis%101
+@stop  # 已测试
+def magnetic_magnitude(x_axis:int,y_axis:int,x_moment=True,y_moment=True):  # True 代表磁矩为正
+    x_axis = 0 if x_axis<=0 else x_axis%101
+    y_axis = 0 if y_axis<=0 else y_axis%101
     x_axis = convert_uint8_to_bytes(x_axis)
     y_axis = convert_uint8_to_bytes(y_axis)
     x_moment = b'\x01' if x_moment else b'\x00'
@@ -114,9 +108,8 @@ def magnetic_magnitude(x_axis:int,y_axis:int,x_moment:bool,y_moment:bool):  # Tr
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 暂不清楚具体功能，所以未测试
 def temp_corresponding(main_panel:int, gesture:int, source:int, hot:int):
     main_panel = 0 if main_panel<0 else main_panel%8
     gesture = 0 if gesture<0 else gesture%8
@@ -131,9 +124,8 @@ def temp_corresponding(main_panel:int, gesture:int, source:int, hot:int):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
+@stop  # 暂不清楚具体功能，所以未测试
 def heat_corresponding(main_panel:int, gesture:int, source:int, hot:int):
     main_panel = 0 if main_panel<0 else main_panel%8
     gesture = 0 if gesture<0 else gesture%8
@@ -148,27 +140,25 @@ def heat_corresponding(main_panel:int, gesture:int, source:int, hot:int):
         var.PORT.write(i)
 
 @wrong
-@check
 @start
-@stop
-def steering_angle(main_panel:int, gesture:int, source:int, hot:int):
-    main_panel = 0 if main_panel<0 else main_panel%8
-    gesture = 0 if gesture<0 else gesture%8
-    source = 0 if source<0 else source%8
-    hot = 0 if hot<0 else hot%8
-    main_panel = convert_uint8_to_bytes(main_panel)
-    gesture = convert_uint8_to_bytes(gesture)
-    source = convert_uint8_to_bytes(source)
-    hot = convert_uint8_to_bytes(hot)
-    data = [b'\x14',b'\x04',main_panel,gesture,source,hot]
+@stop  # 已测试
+def steering_angle(two=0, four=0, one=0, three=0):  # 设备两侧的帆板所用舵机为2和4；1、3无用
+    one = 0 if one<0 else one%8
+    two = 0 if two<0 else two%8
+    three = 0 if three<0 else three%8
+    four = 0 if four<0 else four%8
+    one = convert_uint8_to_bytes(one)
+    two = convert_uint8_to_bytes(two)
+    three = convert_uint8_to_bytes(three)
+    four = convert_uint8_to_bytes(four)
+    data = [b'\x14',b'\x04',one,two,three,four]
     for i in data:
         var.PORT.write(i)
 
 
 @wrong
-@check
 @start
-@stop  # 未完成代码，不要使用
+@stop  # 未测试代码，尽量不要使用
 def communicate(number:int,content:str) -> bool:
     number = 0 if number<0 else number %256
     num = convert_ushort_to_bytes(number)
@@ -180,3 +170,9 @@ def communicate(number:int,content:str) -> bool:
         var.PORT.write(i)
     return True
 
+@wrong  # 在卫星开机后执行一下这个，保证数据传输
+def open_all():
+    source_control()
+    wheel_control()
+    temp_control()
+    magnetic_control()

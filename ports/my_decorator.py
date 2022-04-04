@@ -5,7 +5,7 @@ import ports.var as var
 def check_wrong(func) -> Any:  # 语法糖，避免串口未开启却去调用读取数据的函数
     def my_wrong(*args,**kwargs):
         try:
-            if type(var.PORT) == 'serial.serialwin32.Serial':
+            if str(type(var.PORT)) == "<class 'serial.serialwin32.Serial'>":
                 pass
             else:
                 print('\033[1;31mERROR:','Please check the connection\033[0m')
@@ -41,7 +41,7 @@ def send_stop_bits(func) -> Any:
         return res
     return end
 
-def if_send_successfully(func) -> bool:
+def if_send_successfully(func) -> bool:  # 功能暂未实现
     def check(*args,**kwargs):
         try:
             func(*args,**kwargs)

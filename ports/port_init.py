@@ -3,9 +3,8 @@ import serial
 from serial.tools import list_ports
 from typing import List
 
-def port_list() -> List[str]:  # 返回可用端口的列表
+def port_list() -> List[str]:  # 返回可用端口的列表，用户需自行对列表中的元素进行字符串切割获得可用名称
     try:
-        var.PORT.close()
         var.PORT = serial.Serial()
     except:
         pass
@@ -31,7 +30,7 @@ def port_set(port_name:str) -> bool:
 
 
 
-def baud_set(rate:int) -> None:
+def baud_set(rate:int) -> None:  # 建议用来当摆设，可用
     try:
         var.PORT.baudrate = rate
     except:
