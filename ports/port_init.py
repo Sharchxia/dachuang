@@ -13,7 +13,9 @@ def port_list() -> List[str]:  # 返回可用端口的列表，用户需自行�
         return []
         print('No ports available')
     else:
-        return list(portL)
+        for i in range(len(portL)):
+            portL[i] = str(portL[i])
+        return portL
 
 
 def port_set(port_name:str) -> bool:
